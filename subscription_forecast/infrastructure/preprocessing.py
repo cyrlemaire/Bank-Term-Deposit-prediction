@@ -8,8 +8,11 @@ from sklearn.preprocessing import OneHotEncoder
 
 
 # some parameters to put in config
+features_to_drop = ['contact', 'duration_contact', 'status', 'education', 'nb_contact_last_campaign']
 features_to_indicator = ['has_perso_loan', 'has_housing_loan', 'has_default', 'result_last_campaign']
 socio_eco_features = ['employment_variation_rate', 'idx_consumer_price', 'idx_consumer_confidence']
+numeric_features = ['balance', 'age', 'nb_day_last_contact', 'nb_contact']
+target = ['subscription']
 
 
 def load_data_from(data_path: str, filename: str) -> pd.DataFrame:
