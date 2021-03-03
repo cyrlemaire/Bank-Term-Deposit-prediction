@@ -7,9 +7,10 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
-from sklearn.impute import SimpleImputer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import recall_score
+from sklearn.metrics import precision_score
 
 # config variables:
 
@@ -104,4 +105,12 @@ final_pipeline = Pipeline(steps = [
 ])
 
 final_pipeline.fit(X_train, y_train)
+
+print(final_pipeline.score(X_test, y_test))
+
+y_test = y_test.to_numpy()
+y_pred = final_pipeline.predict(X_test)
+print("Precision = ", precision_score(y_test, y_pred, average="binary", pos_label='Yes'))
+print("Recall = ", recall_score(y_test, y_pred, average="binary", pos_label='Yes'))
+
 

@@ -46,7 +46,6 @@ def features_from(data_path: str, client_data_file_name: str, socio_eco_file_nam
         full_data = full_data.drop(columns = features_to_drop)
         return full_data
 
-
     # load data
     client = load_data_from(data_path, client_data_file_name)
     socio_eco = load_data_from(data_path, socio_eco_file_name)
@@ -55,7 +54,7 @@ def features_from(data_path: str, client_data_file_name: str, socio_eco_file_nam
     # merge data
     client_full = link_dataframes(client, socio_eco)
 
-    #drop features:
+    # drop features:
 
     client_full = drop_features(client_full)
 
