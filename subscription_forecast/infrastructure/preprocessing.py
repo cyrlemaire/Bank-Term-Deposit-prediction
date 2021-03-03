@@ -1,16 +1,11 @@
 import pandas as pd
-import numpy as np
-from sklearn.base import TransformerMixin, BaseEstimator
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import OneHotEncoder
-
 
 
 # some parameters to put in config
 
 features_to_drop = ['contact', 'duration_contact', 'status', 'education', 'nb_contact_last_campaign']
+
+# pre-processing functions
 
 
 def features_from(data_path: str, client_data_file_name: str, socio_eco_file_name: str):
