@@ -56,7 +56,6 @@ class JobImputer(BaseEstimator, TransformerMixin):
 
         return data_x
 
-
 # pipelines to transform dataset
 
 
