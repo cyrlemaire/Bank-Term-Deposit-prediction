@@ -3,7 +3,8 @@ from sklearn.metrics import recall_score,\
     precision_score, \
     confusion_matrix, \
     accuracy_score, \
-    precision_recall_curve
+    precision_recall_curve, \
+    auc
 import matplotlib.pyplot as plt
 
 
@@ -29,7 +30,7 @@ class ModelEvaluator:
         print(confusion_matrix(y_test, y_pred, labels=['Yes', 'No']))
 
         # TODO: put this in an interpretability object/function
-        print("Feature importance: ", self.pipeline.steps[1][1].feature_importances_)
+        #print("Feature importance: ", self.pipeline.steps[1][1].feature_importances_)
 
     def plot_precision_recall(self, x_test, y_test, ColumnTransformer):
         """Get the engineered features and plot the precision recall curve for the model"""
@@ -39,6 +40,8 @@ class ModelEvaluator:
         # get precision and recall
         y_score = self.pipeline.steps[1][1].predict_proba(X_FE)
         precision, recall, thresholds = precision_recall_curve(y_test, y_score[:, 1], pos_label='Yes')
+        auc_pc = auc(recall, precision)
+        print("AUC precision recall curve is : ", auc_pc)
         # plot results
         plt.plot(recall, precision)
         plt.title(f'Precision recall curve for the {self.model_type} classifier')

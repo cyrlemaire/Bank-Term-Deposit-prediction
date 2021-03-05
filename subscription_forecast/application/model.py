@@ -1,5 +1,6 @@
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from subscription_forecast.infrastructure import preprocessing
 from subscription_forecast.domain import feature_engineering
@@ -15,7 +16,7 @@ target = 'subscription'
 
 # model type
 
-model = "random_forest"
+model_name = "RandomForest"
 
 # get data to feed into model pipeline
 
@@ -30,12 +31,12 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_
 
 final_pipeline = Pipeline(steps=[
     ('transformer', feature_engineering.transformer),
-    ('rf_estimator', RandomForestClassifier(n_estimators=100, max_depth=12))
+    (model_name, RandomForestClassifier(n_estimators=200, max_depth=12, verbose=True))
 ])
 
 final_pipeline.fit(x_train, y_train)
 
-evaluator = ModelEvaluator('RandomForest', final_pipeline)
+evaluator = ModelEvaluator(model_name, final_pipeline)
 
 evaluator.print_metrics(x_test, y_test)
 evaluator.plot_precision_recall(x_test, y_test, feature_engineering.transformer)
