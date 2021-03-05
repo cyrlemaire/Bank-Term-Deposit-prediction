@@ -14,9 +14,10 @@ socio_eco_file_name = 'socio_eco.csv'
 
 target = 'subscription'
 
-# model type
+# model type lr ou rf
 
-model_name = "RandomForest"
+MODEL_NAME = "lr"
+
 
 # get data to feed into model pipeline
 
@@ -27,16 +28,26 @@ x = client_full.drop(columns=target)
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
 
-# model pipeline
+# model pipeline selection
+# TODO factory Regressor
 
-final_pipeline = Pipeline(steps=[
-    ('transformer', feature_engineering.transformer),
-    (model_name, RandomForestClassifier(n_estimators=200, max_depth=12, verbose=True))
-])
+if MODEL_NAME == "rf":
+    final_pipeline = Pipeline(steps=[
+        ('transformer', feature_engineering.transformer),
+        (MODEL_NAME, RandomForestClassifier(n_estimators=200, max_depth=12, verbose=True))
+    ])
+elif MODEL_NAME == "lr":
+    final_pipeline = Pipeline(steps=[
+        ('transformer', feature_engineering.transformer),
+        (MODEL_NAME, LogisticRegression(verbose=True))
+    ])
+else:
+    raise KeyError("wrong model name, try 'lr' or 'rf'")
+
 
 final_pipeline.fit(x_train, y_train)
 
-evaluator = ModelEvaluator(model_name, final_pipeline)
+evaluator = ModelEvaluator(MODEL_NAME, final_pipeline)
 
 evaluator.print_metrics(x_test, y_test)
 evaluator.plot_precision_recall(x_test, y_test, feature_engineering.transformer)
