@@ -3,7 +3,8 @@ import pandas as pd
 
 # some parameters to put in config
 
-features_to_drop = ['contact', 'duration_contact', 'status', 'education', 'nb_contact_last_campaign', 'result_last_campaign']
+features_to_drop = ['contact', 'duration_contact', 'nb_contact_last_campaign', 'result_last_campaign', 'has_default']
+
 
 # pre-processing functions
 
@@ -41,6 +42,11 @@ def features_from(data_path: str, client_data_file_name: str, socio_eco_file_nam
         full_data = full_data.drop(columns = features_to_drop)
         return full_data
 
+    def drop_nan(full_data):
+        """drop rows with more than 1 NaN"""
+        full_data.dropna(thresh=full_data.shape[1]-1, axis=0, inplace=True)
+        return full_data
+
     # load data
     client = load_data_from(data_path, client_data_file_name)
     socio_eco = load_data_from(data_path, socio_eco_file_name)
@@ -52,7 +58,12 @@ def features_from(data_path: str, client_data_file_name: str, socio_eco_file_nam
     # drop features:
 
     client_full = drop_features(client_full)
+    print("ALL nans : ", client_full.isna().sum().sum())
 
+    # drop nan:
+
+    client_full = drop_nan(client_full)
+    print("LESS nans : ", client_full.isna().sum().sum())
     return client_full
 
 

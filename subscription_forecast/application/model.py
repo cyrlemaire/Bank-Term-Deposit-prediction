@@ -1,6 +1,7 @@
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from subscription_forecast.infrastructure import preprocessing
 from subscription_forecast.domain import feature_engineering
@@ -14,7 +15,7 @@ socio_eco_file_name = 'socio_eco.csv'
 
 target = 'subscription'
 
-# model type lr ou rf
+# model type lr, svm ou rf
 
 MODEL_NAME = "lr"
 
@@ -35,12 +36,17 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_
 if MODEL_NAME == "rf":
     final_pipeline = Pipeline(steps=[
         ('transformer', feature_engineering.transformer),
-        (MODEL_NAME, RandomForestClassifier(n_estimators=200, max_depth=8, verbose=False))
+        (MODEL_NAME, RandomForestClassifier(n_estimators=200, max_depth=12))
     ])
 elif MODEL_NAME == "lr":
     final_pipeline = Pipeline(steps=[
         ('transformer', feature_engineering.transformer),
-        (MODEL_NAME, LogisticRegression(C=0.1))
+        (MODEL_NAME, LogisticRegression(C=1, solver='saga', penalty='elasticnet', l1_ratio=1))
+    ])
+elif MODEL_NAME == "svm":
+    final_pipeline = Pipeline(steps=[
+        ('transformer', feature_engineering.transformer),
+        (MODEL_NAME, SVC(C=1, kernel='rbf', gamma='scale', verbose=True))
     ])
 else:
     raise KeyError("wrong model name, try 'lr' or 'rf'")

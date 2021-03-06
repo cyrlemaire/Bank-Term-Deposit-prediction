@@ -11,10 +11,10 @@ from sklearn.preprocessing import OneHotEncoder
 
 # config variables:
 
-features_to_indicator = ['has_perso_loan', 'has_housing_loan', 'has_default']
+features_to_indicator = ['has_perso_loan', 'has_housing_loan']
 socio_eco_features = ['employment_variation_rate', 'idx_consumer_price', 'idx_consumer_confidence']
 numeric_features = ['balance', 'nb_contact']
-
+categorical_features = ['status', 'education']
 
 # transformers:
 
@@ -89,12 +89,16 @@ age_transformer = Pipeline(steps=[
     ('age_imputer', AgeImputer()),
     ('age_scaler', StandardScaler())])
 
+categorical_transformer = Pipeline(steps=[
+    ('categorical_imputer', SimpleImputer(strategy='constant', fill_value='unknown')),
+    ('categorical_transformer', OneHotEncoder(drop='first'))])
 
 transformer = ColumnTransformer(
     transformers=[('feature_indicator', IndicatorTransformer(), features_to_indicator),
                   ('age_transformer', age_transformer, ['age']),
-                  ('job_transformer', job_transformer, ['job_type']),
+                  ('job_transformer', JobTransformer(), ['job_type']),
                   ('numeric_scaler', StandardScaler(), numeric_features),
+                  ('category_transformer', categorical_transformer, categorical_features),
                   ('socio_eco_scaler', StandardScaler(), socio_eco_features)],
     remainder='drop'
 )

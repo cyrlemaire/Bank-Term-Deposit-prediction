@@ -45,8 +45,8 @@ class ModelEvaluator:
         # get precision and recall
         y_score = self.pipeline.steps[1][1].predict_proba(X_FE)
         precision, recall, thresholds = precision_recall_curve(y_test, y_score[:, 1], pos_label=1)
-        auc_pc = auc(recall, precision)
-        print("AUC precision recall curve is : ", auc_pc)
+        auc_precision_recall = auc(recall, precision)
+        print("AUC precision recall curve is : ", auc_precision_recall)
         # plot results
         plt.plot(recall, precision)
         plt.title(f'Precision recall curve for the {self.model_type} classifier')
