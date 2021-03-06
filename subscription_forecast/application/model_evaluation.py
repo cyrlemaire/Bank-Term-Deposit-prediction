@@ -15,7 +15,7 @@ class ModelEvaluator:
         self.model_type = model_type
         self.pipeline = pipeline
 
-    def print_metrics(self, x_test, y_test):
+    def print_metrics(self, x_test, y_test, x_train, y_train):
         """Display various metrics to evaluate the performance of the model:
             -Accuracy
             -Precision
@@ -23,23 +23,28 @@ class ModelEvaluator:
             -Confusion Matrix"""
         y_test = y_test.to_numpy()
         y_pred = self.pipeline.predict(x_test)
-
+        y_pred_train = self.pipeline.predict(x_train)
+        print("Model train accuracy : ", accuracy_score(y_train, y_pred_train))
         print("Model accuracy : ", accuracy_score(y_test, y_pred))
-        print("Model precision : ", precision_score(y_test, y_pred, average="binary", pos_label='Yes'))
-        print("Model recall = ", recall_score(y_test, y_pred, average="binary", pos_label='Yes'))
-        print(confusion_matrix(y_test, y_pred, labels=['Yes', 'No']))
+        print("Model precision : ", precision_score(y_test, y_pred, average="binary", pos_label=1))
+        print("Model recall = ", recall_score(y_test, y_pred, average="binary", pos_label=1))
+        print(confusion_matrix(y_test, y_pred, labels=[1, 0]))
 
         # TODO: put this in an interpretability object/function
-        #print("Feature importance: ", self.pipeline.steps[1][1].feature_importances_)
+        if self.model_type == "rf":
+            print("Feature importance: ", self.pipeline.steps[1][1].feature_importances_)
+        elif self.model_type == "lr":
+            print("Feature coefficients: ", self.pipeline.steps[1][1].coef_)
 
-    def plot_precision_recall(self, x_test, y_test, ColumnTransformer):
+    def plot_precision_recall(self, x_test, y_test, x_train, y_train, ColumnTransformer):
         """Get the engineered features and plot the precision recall curve for the model"""
         # get features
         transformer = ColumnTransformer
-        X_FE = transformer.fit_transform(x_test)
+        transformer.fit(x_train, y_train)
+        X_FE = transformer.transform(x_test)
         # get precision and recall
         y_score = self.pipeline.steps[1][1].predict_proba(X_FE)
-        precision, recall, thresholds = precision_recall_curve(y_test, y_score[:, 1], pos_label='Yes')
+        precision, recall, thresholds = precision_recall_curve(y_test, y_score[:, 1], pos_label=1)
         auc_pc = auc(recall, precision)
         print("AUC precision recall curve is : ", auc_pc)
         # plot results

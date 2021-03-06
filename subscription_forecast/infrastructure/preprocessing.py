@@ -3,7 +3,7 @@ import pandas as pd
 
 # some parameters to put in config
 
-features_to_drop = ['date','contact', 'duration_contact', 'status', 'education', 'nb_contact_last_campaign']
+features_to_drop = ['contact', 'duration_contact', 'status', 'education', 'nb_contact_last_campaign', 'result_last_campaign']
 
 # pre-processing functions
 
