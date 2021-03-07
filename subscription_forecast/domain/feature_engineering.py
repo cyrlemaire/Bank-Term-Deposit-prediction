@@ -9,13 +9,13 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
 
 
-
 # config variables:
 
 features_to_indicator = ['has_perso_loan', 'has_housing_loan']
 socio_eco_features = ['employment_variation_rate', 'idx_consumer_price', 'idx_consumer_confidence']
 numeric_features = ['balance', 'nb_contact']
 categorical_features = ['status', 'education']
+
 
 # transformers:
 
@@ -34,7 +34,7 @@ class IndicatorTransformer(BaseEstimator, TransformerMixin):
 
 
 class DateTransformer(BaseEstimator, TransformerMixin):
-    """Extract weekdays and months from date and do targeet encoding"""
+    """Extract weekdays and months from date and do target encoding"""
     def __init__(self):
         pass
 
@@ -74,7 +74,6 @@ class AgeImputer(BaseEstimator, TransformerMixin):
     def transform(self, data_x, y=None):
         data_x['age'] = data_x['age'].replace({123: np.NaN})
         data_x['age'] = data_x['age'].fillna(float(data_x['age'].median()))
-        data_x['age2'] = data_x['age']**2
         return data_x
 
 
@@ -100,6 +99,19 @@ class JobTransformer(BaseEstimator, TransformerMixin):
         return data_x
 
 
+class DayLastContactTransformer(BaseEstimator, TransformerMixin):
+    """ sets the -1's as 0 and transforms the >0 values as their reverse"""
+    def __init__(self):
+        pass
+
+    def fit(self, data_x, y=None):
+        return self
+
+    def transform(self, data_x, y=None):
+        data_x['nb_day_last_contact'] = np.where(data_x.nb_day_last_contact < 0, 0, 1/data_x.nb_day_last_contact)
+        return data_x
+
+
 # pipelines to transform dataset
 
 
@@ -111,20 +123,19 @@ categorical_transformer = Pipeline(steps=[
     ('categorical_imputer', SimpleImputer(strategy='constant', fill_value='unknown')),
     ('categorical_transformer', OneHotEncoder(drop='first'))])
 
+day_last_contact_transformer = Pipeline(steps=[
+    ('day_last_contact_transformer', DayLastContactTransformer()),
+    ('day_last_contact_scaler', StandardScaler())])
+
+
 transformer = ColumnTransformer(
     transformers=[('feature_indicator', IndicatorTransformer(), features_to_indicator),
                   ('age_transformer', age_transformer, ['age']),
-                 # ('job_transformer', JobTransformer(), ['job_type']),
+                  #('job_transformer', JobTransformer(), ['job_type']),
                   ('date_transformer', DateTransformer(), ['date']),
                   ('numeric_scaler', StandardScaler(), numeric_features),
                   ('category_transformer', categorical_transformer, categorical_features),
-                  ('socio_eco_scaler', StandardScaler(), socio_eco_features)],
+                  ('socio_eco_scaler', StandardScaler(), socio_eco_features),
+                  ('day_last_contact_transformer', day_last_contact_transformer, ['nb_day_last_contact'])],
     remainder='drop'
 )
-
-
-
-
-
-
-
