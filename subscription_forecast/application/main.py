@@ -16,7 +16,7 @@ config_path = '/Users/cyrillemaire/Documents/Yotta/Project/productsubscription_d
               'subscription_forecast/config/config.yml'
 CONFIG = read_yaml(config_path)
 
-# get filters for feature engineering
+# get filters for feature engineering:
 
 TARGET = CONFIG['filters']['TARGET']
 features_to_drop = CONFIG['filters']['features_to_drop']
@@ -27,22 +27,21 @@ categorical_features = CONFIG['filters']['categorical_features']
 
 MODEL_NAME = CONFIG['model']['name']
 
-# get preprocessed dataset
+# get preprocessed dataset:
 
 client_full = preprocessing.features_from(CONFIG['data']['data_path'],
                                           CONFIG['data']['client_file_name'],
                                           CONFIG['data']['socio_eco_file_name'],
                                           features_to_drop)
 
-# split the data into train set and test set
+# split the data into train set and test set:
 
 y = client_full[TARGET]
 y = y.replace({'Yes': 1, 'No': 0})
 x = client_full.drop(columns=TARGET)
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
-
-# Feature engineering pipeline
+# Feature engineering pipeline:
 
 transformer = ColumnTransformer(
     transformers=[('feature_indicator', feature_engineering.IndicatorTransformer(), features_to_indicator),
@@ -56,11 +55,11 @@ transformer = ColumnTransformer(
     remainder='drop'
 )
 
-# model training pipeline
+# model training pipeline:
 """Model names are:
-    -rf for Random Forest
-    -lr for Logistic Regression
-    -svm for Support Vector Machine"""
+    -'rf' for Random Forest
+    -'lr' for Logistic Regression
+    -'svm' for Support Vector Machine"""
 
 # TODO Regressor factory
 
@@ -82,13 +81,11 @@ elif MODEL_NAME == "svm":
 else:
     raise KeyError("wrong model name, try 'lr' or 'rf'")
 
-
 final_pipeline.fit(x_train, y_train)
+
+# model performance evaluation
 
 evaluator = ModelEvaluator(MODEL_NAME, final_pipeline)
 
 evaluator.print_metrics(x_test, y_test, x_train, y_train)
 evaluator.plot_precision_recall(x_test, y_test, x_train, y_train, transformer)
-
-if __name__ == '__main__':
-    pass
