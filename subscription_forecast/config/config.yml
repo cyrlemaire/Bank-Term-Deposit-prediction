@@ -1,0 +1,25 @@
+data:
+  data_path : '/Users/cyrillemaire/Documents/Yotta/Project/data/train'
+  client_data_file_name : 'data.csv'
+  socio_eco_file_name : 'socio_eco.csv'
+
+filters:
+  TARGET : 'subscription'
+  features_drop: ['contact',
+                  'duration_contact',
+                  'nb_contact_last_campaign',
+                  'result_last_campaign',
+                  'has_default']
+  features_to_indicator : ['has_perso_loan',
+                           'has_housing_loan']
+  socio_eco_features : ['employment_variation_rate',
+                        'idx_consumer_price',
+                        'idx_consumer_confidence']
+  numeric_features : ['balance',
+                      'nb_contact']
+  categorical_features : ['status',
+                          'education']
+
+
+output:
+  file_path: '/Users/cyrillemaire/Documents/Yotta/Project/EDA'
