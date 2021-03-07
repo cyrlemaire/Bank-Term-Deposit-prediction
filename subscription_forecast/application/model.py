@@ -41,7 +41,7 @@ if MODEL_NAME == "rf":
 elif MODEL_NAME == "lr":
     final_pipeline = Pipeline(steps=[
         ('transformer', feature_engineering.transformer),
-        (MODEL_NAME, LogisticRegression(C=1, solver='saga', penalty='elasticnet', l1_ratio=1))
+        (MODEL_NAME, LogisticRegression(C=5,max_iter=500))
     ])
 elif MODEL_NAME == "svm":
     final_pipeline = Pipeline(steps=[

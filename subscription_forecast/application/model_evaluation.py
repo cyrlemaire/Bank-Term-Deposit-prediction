@@ -6,6 +6,7 @@ from sklearn.metrics import recall_score,\
     precision_recall_curve, \
     auc
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 class ModelEvaluator:
@@ -28,7 +29,8 @@ class ModelEvaluator:
         print("Model accuracy : ", accuracy_score(y_test, y_pred))
         print("Model precision : ", precision_score(y_test, y_pred, average="binary", pos_label=1))
         print("Model recall = ", recall_score(y_test, y_pred, average="binary", pos_label=1))
-        print(confusion_matrix(y_test, y_pred, labels=[1, 0]))
+        print("Confustion Matrix : \n"
+              , confusion_matrix(y_test, y_pred, labels=[1, 0]))
 
         # TODO: put this in an interpretability object/function
         if self.model_type == "rf":
@@ -48,8 +50,10 @@ class ModelEvaluator:
         auc_precision_recall = auc(recall, precision)
         print("AUC precision recall curve is : ", auc_precision_recall)
         # plot results
-        plt.plot(recall, precision)
+        plt.plot(recall, precision, label='precision')
+        thresholds = np.insert(thresholds, [0], 0)
+        plt.plot(recall, thresholds, label='thresholds')
         plt.title(f'Precision recall curve for the {self.model_type} classifier')
         plt.xlabel('recall')
-        plt.ylabel('precision')
+        plt.legend()
         plt.show()
