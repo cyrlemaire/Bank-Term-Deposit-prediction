@@ -1,15 +1,10 @@
 import pandas as pd
 
 
-# some parameters to put in config
-
-features_to_drop = ['contact', 'duration_contact', 'nb_contact_last_campaign', 'result_last_campaign', 'has_default']
-
-
 # pre-processing functions
 
 
-def features_from(data_path: str, client_data_file_name: str, socio_eco_file_name: str):
+def features_from(data_path: str, client_data_file_name: str, socio_eco_file_name: str, to_drop: list):
     """extract the 2 csv files and create a dataset to feed in the
     Feature engineering pipeline"""
 
@@ -39,7 +34,7 @@ def features_from(data_path: str, client_data_file_name: str, socio_eco_file_nam
         return data_left
 
     def drop_features(full_data):
-        full_data = full_data.drop(columns = features_to_drop)
+        full_data = full_data.drop(columns=to_drop)
         return full_data
 
     def drop_nan(full_data):

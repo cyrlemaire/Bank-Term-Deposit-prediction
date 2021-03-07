@@ -1,11 +1,11 @@
 data:
   data_path : '/Users/cyrillemaire/Documents/Yotta/Project/data/train'
-  client_data_file_name : 'data.csv'
+  client_file_name : 'data.csv'
   socio_eco_file_name : 'socio_eco.csv'
 
 filters:
   TARGET : 'subscription'
-  features_drop: ['contact',
+  features_to_drop: ['contact',
                   'duration_contact',
                   'nb_contact_last_campaign',
                   'result_last_campaign',
@@ -20,6 +20,8 @@ filters:
   categorical_features : ['status',
                           'education']
 
+model:
+  name: "lr"
 
 output:
   file_path: '/Users/cyrillemaire/Documents/Yotta/Project/EDA'
