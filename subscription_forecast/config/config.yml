@@ -21,7 +21,7 @@ filters:
                           'education']
 
 model:
-  name: "lr"
+  name: "rf"
 
 output:
   file_path: '/Users/cyrillemaire/Documents/Yotta/Project/EDA'
