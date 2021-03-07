@@ -1,6 +1,7 @@
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from subscription_forecast.infrastructure import preprocessing
 from subscription_forecast.domain import feature_engineering
@@ -14,7 +15,7 @@ socio_eco_file_name = 'socio_eco.csv'
 
 target = 'subscription'
 
-# model type lr ou rf
+# model type lr, svm ou rf
 
 MODEL_NAME = "lr"
 
@@ -24,6 +25,7 @@ MODEL_NAME = "lr"
 client_full = preprocessing.features_from(data_path, client_data_file_name, socio_eco_file_name)
 
 y = client_full['subscription']
+y = y.replace({'Yes': 1, 'No': 0})
 x = client_full.drop(columns=target)
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
@@ -34,12 +36,17 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_
 if MODEL_NAME == "rf":
     final_pipeline = Pipeline(steps=[
         ('transformer', feature_engineering.transformer),
-        (MODEL_NAME, RandomForestClassifier(n_estimators=200, max_depth=12, verbose=True))
+        (MODEL_NAME, RandomForestClassifier(n_estimators=200, max_depth=12))
     ])
 elif MODEL_NAME == "lr":
     final_pipeline = Pipeline(steps=[
         ('transformer', feature_engineering.transformer),
-        (MODEL_NAME, LogisticRegression(verbose=True))
+        (MODEL_NAME, LogisticRegression(C=5,max_iter=500))
+    ])
+elif MODEL_NAME == "svm":
+    final_pipeline = Pipeline(steps=[
+        ('transformer', feature_engineering.transformer),
+        (MODEL_NAME, SVC(C=1, kernel='rbf', gamma='scale', verbose=True))
     ])
 else:
     raise KeyError("wrong model name, try 'lr' or 'rf'")
@@ -49,6 +56,6 @@ final_pipeline.fit(x_train, y_train)
 
 evaluator = ModelEvaluator(MODEL_NAME, final_pipeline)
 
-evaluator.print_metrics(x_test, y_test)
-evaluator.plot_precision_recall(x_test, y_test, feature_engineering.transformer)
+evaluator.print_metrics(x_test, y_test, x_train, y_train)
+evaluator.plot_precision_recall(x_test, y_test, x_train, y_train, feature_engineering.transformer)
 
