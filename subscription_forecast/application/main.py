@@ -68,12 +68,12 @@ transformer = ColumnTransformer(
 if MODEL_NAME == "rf":
     final_pipeline = Pipeline(steps=[
         ('transformer', transformer),
-        (MODEL_NAME, RandomForestClassifier(n_estimators=200, max_depth=12))
+        (MODEL_NAME, RandomForestClassifier(n_estimators=200, max_depth=12, random_state=12))
     ])
 elif MODEL_NAME == "lr":
     final_pipeline = Pipeline(steps=[
         ('transformer', transformer),
-        (MODEL_NAME, LogisticRegression(C=5,max_iter=500))
+        (MODEL_NAME, LogisticRegression(C=5, max_iter=500))
     ])
 elif MODEL_NAME == "svm":
     final_pipeline = Pipeline(steps=[
