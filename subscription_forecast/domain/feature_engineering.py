@@ -58,8 +58,7 @@ class AgeImputer(BaseEstimator, TransformerMixin):
 
     def transform(self, data_x, y=None):
         data_x['age'] = data_x['age'].replace({123: np.NaN})
-        data_x['age'] = data_x['age'].fillna(int(random.randrange(data_x['age'].median()-5,
-                                                                  data_x['age'].median()+5)))
+        data_x['age'] = data_x['age'].fillna(data_x['age'].median())
         return data_x
 
 
