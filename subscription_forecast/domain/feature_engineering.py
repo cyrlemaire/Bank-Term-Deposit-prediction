@@ -5,6 +5,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import RobustScaler
 
 
 # transformers:
@@ -105,7 +106,7 @@ class DayLastContactTransformer(BaseEstimator, TransformerMixin):
 
 age_transformer = Pipeline(steps=[
     ('age_imputer', AgeImputer()),
-    ('age_scaler', StandardScaler())])
+    ('age_scaler', RobustScaler())])
 
 categorical_transformer = Pipeline(steps=[
     ('categorical_imputer', SimpleImputer(strategy='constant', fill_value='unknown')),
@@ -113,6 +114,6 @@ categorical_transformer = Pipeline(steps=[
 
 day_last_contact_transformer = Pipeline(steps=[
     ('day_last_contact_transformer', DayLastContactTransformer()),
-    ('day_last_contact_scaler', StandardScaler())])
+    ('day_last_contact_scaler', RobustScaler())])
 
 

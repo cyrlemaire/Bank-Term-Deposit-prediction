@@ -5,6 +5,7 @@ from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import RobustScaler
 
 from subscription_forecast.config.config import read_yaml
 from subscription_forecast.infrastructure import preprocessing
@@ -46,12 +47,13 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_
 transformer = ColumnTransformer(
     transformers=[('feature_indicator', feature_engineering.IndicatorTransformer(), features_to_indicator),
                   ('age_transformer', feature_engineering.age_transformer, ['age']),
-                  ('job_transformer', feature_engineering.JobTransformer(), ['job_type']),
+                  #('job_transformer', feature_engineering.JobTransformer(), ['job_type']),
                   ('date_transformer', feature_engineering.DateTransformer(), ['date']),
-                  ('numeric_scaler', StandardScaler(), numeric_features),
+                  ('numeric_scaler', RobustScaler(), numeric_features),
                   ('category_transformer', feature_engineering.categorical_transformer, categorical_features),
-                  ('socio_eco_scaler', StandardScaler(), socio_eco_features),
-                  ('day_last_contact_transformer', feature_engineering.day_last_contact_transformer, ['nb_day_last_contact'])],
+                  ('socio_eco_scaler', RobustScaler(), socio_eco_features),
+                  ('day_last_contact_transformer', feature_engineering.day_last_contact_transformer, ['nb_day_last_contact'])
+                  ],
     remainder='drop'
 )
 

@@ -29,7 +29,7 @@ class ModelEvaluator:
         print("Model accuracy : ", np.around(accuracy_score(y_test, y_pred), decimals=3))
         print("Model precision : ", np.around(precision_score(y_test, y_pred, average="binary", pos_label=1), decimals=3))
         print("Model recall = ", np.around(recall_score(y_test, y_pred, average="binary", pos_label=1), decimals=3))
-        print("Confustion Matrix : \n",
+        print("Confusion Matrix : \n",
               confusion_matrix(y_test, y_pred, labels=[1, 0]))
 
         # TODO: put this in an interpretability object/function
