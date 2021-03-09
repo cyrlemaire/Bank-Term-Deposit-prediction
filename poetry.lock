@@ -129,6 +129,37 @@ optional = false
 python-versions = ">=2.7"
 
 [[package]]
+name = "imbalanced-learn"
+version = "0.8.0"
+description = "Toolbox for imbalanced dataset in machine learning."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+joblib = ">=0.11"
+numpy = ">=1.13.3"
+scikit-learn = ">=0.24"
+scipy = ">=0.19.1"
+
+[package.extras]
+dev = ["black", "flake8"]
+docs = ["sphinx", "sphinx-gallery", "pydata-sphinx-theme", "sphinxcontrib-bibtex", "numpydoc", "matplotlib", "pandas", "seaborn"]
+optional = ["keras", "tensorflow"]
+tests = ["pytest", "pytest-cov"]
+
+[[package]]
+name = "imblearn"
+version = "0.0"
+description = "Toolbox for imbalanced dataset in machine learning."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+imbalanced-learn = "*"
+
+[[package]]
 name = "ipykernel"
 version = "5.5.0"
 description = "IPython Kernel for Jupyter"
@@ -921,7 +952,7 @@ notebook = ">=4.4.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.8.5"
-content-hash = "da88f034c307f0dfe14a631a53dd7273b1790fc42a11a48d48b4abcbf50d880e"
+content-hash = "ac1660f922f023abd61593de9adc509a26f7e9917fc424ae9183a45d5f2d97cf"
 
 [metadata.files]
 appnope = [
@@ -1026,6 +1057,14 @@ defusedxml = [
 entrypoints = [
     {file = "entrypoints-0.3-py2.py3-none-any.whl", hash = "sha256:589f874b313739ad35be6e0cd7efde2a4e9b6fea91edcc34e58ecbb8dbe56d19"},
     {file = "entrypoints-0.3.tar.gz", hash = "sha256:c70dd71abe5a8c85e55e12c19bd91ccfeec11a6e99044204511f9ed547d48451"},
+]
+imbalanced-learn = [
+    {file = "imbalanced-learn-0.8.0.tar.gz", hash = "sha256:1c04d203575088af5814511b6238b38e7523370cc188770b7a25418d09cf3d29"},
+    {file = "imbalanced_learn-0.8.0-py3-none-any.whl", hash = "sha256:58f9baaf90bfe8931973b9637328bda327850c7fde3787ac19922e36bfe8c6a2"},
+]
+imblearn = [
+    {file = "imblearn-0.0-py2.py3-none-any.whl", hash = "sha256:d42c2d709d22c00d2b9a91e638d57240a8b79b4014122d92181fcd2549a2f79a"},
+    {file = "imblearn-0.0.tar.gz", hash = "sha256:d8fbb662919c1b16f438ad91a8256220e53bcf6815c9ad5502c518b798de34f2"},
 ]
 ipykernel = [
     {file = "ipykernel-5.5.0-py3-none-any.whl", hash = "sha256:efd07253b54d84d26e0878d268c8c3a41582a18750da633c2febfd2ece0d467d"},
