@@ -4,7 +4,8 @@ from sklearn.metrics import recall_score,\
     confusion_matrix, \
     accuracy_score, \
     precision_recall_curve, \
-    auc
+    auc, \
+    average_precision_score
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -29,6 +30,8 @@ class ModelEvaluator:
         print("Model accuracy : ", np.around(accuracy_score(y_test, y_pred), decimals=3))
         print("Model precision : ", np.around(precision_score(y_test, y_pred, average="binary", pos_label=1), decimals=3))
         print("Model recall = ", np.around(recall_score(y_test, y_pred, average="binary", pos_label=1), decimals=3))
+        print("AV precision score = ", np.around(average_precision_score(y_test, y_pred), decimals=3))
+
         print("Confusion Matrix : \n",
               confusion_matrix(y_test, y_pred, labels=[1, 0]))
 
@@ -60,14 +63,3 @@ class ModelEvaluator:
         plt.legend()
         plt.show()
 
-    def auc_precision_recall(self, x_test, y_test, x_train, y_train, ColumnTransformer):
-        """Get the engineered features and plot the precision recall curve for the model"""
-        # get features
-        transformer = ColumnTransformer
-        transformer.fit(x_train, y_train)
-        X_FE = transformer.transform(x_test)
-        # get precision and recall
-        y_score = self.pipeline.steps[1][1].predict_proba(X_FE)
-        precision, recall, thresholds = precision_recall_curve(y_test, y_score[:, 1], pos_label=1)
-        auc_precision_recall = auc(recall, precision)
-        return auc_precision_recall

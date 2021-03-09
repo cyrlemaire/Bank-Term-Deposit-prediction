@@ -40,14 +40,13 @@ client_full = preprocessing.features_from(CONFIG['data']['data_path'],
 y = client_full[TARGET]
 y = y.replace({'Yes': 1, 'No': 0})
 x = client_full.drop(columns=TARGET)
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, stratify=y, random_state=42)
 
 # Feature engineering pipeline:
 
 transformer = ColumnTransformer(
     transformers=[('feature_indicator', feature_engineering.IndicatorTransformer(), features_to_indicator),
                   ('age_transformer', feature_engineering.age_transformer, ['age']),
-                  #('job_transformer', feature_engineering.JobTransformer(), ['job_type']),
                   ('date_transformer', feature_engineering.DateTransformer(), ['date']),
                   ('numeric_scaler', RobustScaler(), numeric_features),
                   ('category_transformer', feature_engineering.categorical_transformer, categorical_features),
@@ -75,12 +74,6 @@ elif MODEL_NAME == "lr":
         ('transformer', transformer),
         (MODEL_NAME, LogisticRegression(C=5, max_iter=500))
     ])
-elif MODEL_NAME == "svm":
-    final_pipeline = Pipeline(steps=[
-        ('transformer', transformer),
-        (MODEL_NAME, SVC(C=1, kernel='rbf', gamma='scale', verbose=True))
-    ])
-else:
     raise KeyError("wrong model name, try 'lr' or 'rf'")
 
 final_pipeline.fit(x_train, y_train)

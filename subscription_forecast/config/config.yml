@@ -10,6 +10,7 @@ filters:
                   'nb_contact_last_campaign',
                   'result_last_campaign',
                   'has_default',
+                  'job_type'
                     ]
   features_to_indicator : ['has_perso_loan',
                            'has_housing_loan']

@@ -38,7 +38,7 @@ def features_from(data_path: str, client_data_file_name: str, socio_eco_file_nam
         return full_data
 
     def drop_nan(full_data):
-        """drop rows with more than 1 NaN"""
+        """drop rows with more than 2 NaN"""
         rows_removed = full_data
         full_data = full_data.dropna(thresh=full_data.shape[1]-2, axis=0)
         rows_removed = rows_removed.drop(full_data.index.values.tolist(), axis=0)
@@ -55,13 +55,13 @@ def features_from(data_path: str, client_data_file_name: str, socio_eco_file_nam
     # drop features:
 
     client_full = drop_features(client_full)
-    print(f"Before preprocessing the dataset contains {client_full.isna().sum().sum()} missing values")
+    print(f"Before preprocessing the dataset contains {client_full.isna().sum()} missing values")
 
     # drop nan:
 
-    client_full, rows_removed = drop_nan(client_full)
-    print(f"After preprocessing the dataset contains {client_full.isna().sum().sum()} missing values")
-    return client_full, rows_removed
+    #client_full, rows_removed = drop_nan(client_full)
+    print(f"After preprocessing the dataset contains {client_full.isna().sum()} missing values")
+    return client_full
 
 
 
