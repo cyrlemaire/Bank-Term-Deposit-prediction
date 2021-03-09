@@ -9,7 +9,9 @@ filters:
                   'duration_contact',
                   'nb_contact_last_campaign',
                   'result_last_campaign',
-                  'has_default']
+                  'has_default',
+                  'job_type'
+                    ]
   features_to_indicator : ['has_perso_loan',
                            'has_housing_loan']
   socio_eco_features : ['employment_variation_rate',
@@ -17,11 +19,12 @@ filters:
                         'idx_consumer_confidence']
   numeric_features : ['balance',
                       'nb_contact']
-  categorical_features : ['status',
-                          'education']
+  categorical_features : ['education',
+                          'status'
+                         ]
 
 model:
-  name: "lr"
+  name: "rf"
 
 output:
   file_path: '/Users/cyrillemaire/Documents/Yotta/Project/EDA'
