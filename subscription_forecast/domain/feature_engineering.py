@@ -20,7 +20,7 @@ class IndicatorTransformer(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, data_x, y=None):
-        data_x = np.where(data_x == ('Yes' or 'Succes'), 1, 0)
+        data_x = np.where((data_x == 'Yes') | (data_x == 'Succes'), 1, 0)
         return data_x
 
 
