@@ -74,6 +74,7 @@ elif MODEL_NAME == "lr":
         ('transformer', transformer),
         (MODEL_NAME, LogisticRegression(C=5, max_iter=500))
     ])
+else:
     raise KeyError("wrong model name, try 'lr' or 'rf'")
 
 final_pipeline.fit(x_train, y_train)

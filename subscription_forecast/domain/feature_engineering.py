@@ -23,7 +23,6 @@ class IndicatorTransformer(BaseEstimator, TransformerMixin):
         data_x = np.where((data_x == 'Yes') | (data_x == 'Succes'), 1, 0)
         return data_x
 
-
 class DateTransformer(BaseEstimator, TransformerMixin):
     """Extract weekdays and months from date and do target encoding"""
     def __init__(self):
