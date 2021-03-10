@@ -98,7 +98,7 @@ class DayLastContactTransformer(BaseEstimator, TransformerMixin):
 
 
 class HousingPersoLoanTransformer(BaseEstimator, TransformerMixin):
-    """TODO add description"""
+    """creates a new column that target encode the number of loans the rows are having"""
     def __init__(self):
         pass
 
