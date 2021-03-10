@@ -4,8 +4,8 @@ from sklearn.metrics import recall_score,\
     confusion_matrix, \
     accuracy_score, \
     precision_recall_curve, \
-    auc, \
-    average_precision_score
+    auc
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -30,8 +30,6 @@ class ModelEvaluator:
         print("Model accuracy : ", np.around(accuracy_score(y_test, y_pred), decimals=3))
         print("Model precision : ", np.around(precision_score(y_test, y_pred, average="binary", pos_label=1), decimals=3))
         print("Model recall = ", np.around(recall_score(y_test, y_pred, average="binary", pos_label=1), decimals=3))
-        print("AV precision score = ", np.around(average_precision_score(y_test, y_pred), decimals=3))
-
         print("Confusion Matrix : \n",
               confusion_matrix(y_test, y_pred, labels=[1, 0]))
 
