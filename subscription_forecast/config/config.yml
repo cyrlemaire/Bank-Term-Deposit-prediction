@@ -13,7 +13,7 @@ filters:
                     ]
   features_to_indicator : ['has_perso_loan',
                            'has_housing_loan',
-                           'result_last_campaign',]
+                           'result_last_campaign']
   socio_eco_features : ['employment_variation_rate',
                         'idx_consumer_price',
                         'idx_consumer_confidence']
@@ -25,6 +25,7 @@ filters:
 
 model:
   name: "rf"
+  drop_nan: False
 
 output:
   file_path: '/Users/cyrillemaire/Documents/Yotta/Project/EDA'

@@ -4,13 +4,11 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import RobustScaler
-import pickle
-
 
 from subscription_forecast.config.config import read_yaml
 from subscription_forecast.infrastructure import preprocessing
 from subscription_forecast.domain import feature_engineering
-from subscription_forecast.application.model_evaluation import ModelEvaluator
+from subscription_forecast.domain.model_evaluation import ModelEvaluator
 
 # read config file:
 
