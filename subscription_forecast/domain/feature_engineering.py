@@ -97,6 +97,20 @@ class DayLastContactTransformer(BaseEstimator, TransformerMixin):
         return data_x
 
 
+class HousingPersoLoanTransformer(BaseEstimator, TransformerMixin):
+    """TODO add description"""
+    def __init__(self):
+        pass
+
+    def fit(self, data_x, y=None):
+        return self
+
+    def transform(self, data_x, y=None):
+        data_x['has_housing_loan'] = data_x['has_housing_loan'].replace({'Yes': 1, 'No': 0})
+        data_x['has_perso_loan'] = data_x['has_perso_loan'].replace({'Yes': 1, 'No': 0, np.NaN: 0})
+        data_x['has_loan'] = data_x['has_housing_loan'] + data_x['has_perso_loan']
+        return data_x
+
 # custom transformer pipelines
 
 

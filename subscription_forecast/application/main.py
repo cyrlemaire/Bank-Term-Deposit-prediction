@@ -51,6 +51,7 @@ transformer = ColumnTransformer(
                   ('numeric_scaler', RobustScaler(), numeric_features),
                   ('category_transformer', feature_engineering.categorical_transformer, categorical_features),
                   ('socio_eco_scaler', RobustScaler(), socio_eco_features),
+                  ('housing_perso_loan_transformer', feature_engineering.HousingPersoLoanTransformer(), ['has_housing_loan', 'has_perso_loan']),
                   ('day_last_contact_transformer', feature_engineering.day_last_contact_transformer, ['nb_day_last_contact'])
                   ],
     remainder='drop'
