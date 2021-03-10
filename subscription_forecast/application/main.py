@@ -1,21 +1,20 @@
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import RobustScaler
+import pickle
+
 
 from subscription_forecast.config.config import read_yaml
 from subscription_forecast.infrastructure import preprocessing
 from subscription_forecast.domain import feature_engineering
 from subscription_forecast.application.model_evaluation import ModelEvaluator
 
-# read config file
-config_path = '/Users/cyrillemaire/Documents/Yotta/Project/productsubscription_dc_cl_js/' \
-              'subscription_forecast/config/config.yml'
-CONFIG = read_yaml(config_path)
+# read config file:
+
+CONFIG = read_yaml()
 
 # get filters for feature engineering:
 
@@ -85,3 +84,4 @@ evaluator = ModelEvaluator(MODEL_NAME, final_pipeline)
 
 evaluator.print_metrics(x_test, y_test, x_train, y_train)
 evaluator.plot_precision_recall(x_test, y_test, x_train, y_train, transformer)
+

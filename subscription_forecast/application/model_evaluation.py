@@ -4,8 +4,8 @@ from sklearn.metrics import recall_score,\
     confusion_matrix, \
     accuracy_score, \
     precision_recall_curve, \
-    auc, \
-    average_precision_score
+    auc
+
 import matplotlib.pyplot as plt
 import numpy as np
 

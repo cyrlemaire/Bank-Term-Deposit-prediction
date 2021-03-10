@@ -14,9 +14,8 @@ from subscription_forecast.domain import feature_engineering
 
 
 # read config file
-config_path = '/Users/cyrillemaire/Documents/Yotta/Project/productsubscription_dc_cl_js/' \
-              'subscription_forecast/config/config.yml'
-CONFIG = read_yaml(config_path)
+CONFIG = read_yaml()
+
 
 # get filters for feature engineering:
 
