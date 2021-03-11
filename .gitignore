@@ -1,5 +1,6 @@
 .DS_STORE
-.idea
+.idea/*
 *__pycache__
 *.ipynb_checkpoints
 env.config
+config.yml
