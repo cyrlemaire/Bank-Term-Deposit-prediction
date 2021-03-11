@@ -33,13 +33,6 @@ class ModelEvaluator:
         print("Confusion Matrix : \n",
               confusion_matrix(y_test, y_pred, labels=[1, 0]))
 
-        if self.model_type == "rf":
-            print("Feature importance: \n",
-                  np.around(self.pipeline.steps[1][1].feature_importances_, decimals=3))
-        elif self.model_type == "lr":
-            print("Feature coefficients: \n",
-                  np.around(self.pipeline.steps[1][1].coef_, decimals=3))
-
     def plot_precision_recall(self, x_test, y_test, x_train, y_train):
         """Get the engineered features and plot the precision recall curve for the model"""
         # get features
@@ -51,11 +44,21 @@ class ModelEvaluator:
         auc_precision_recall = auc(recall, precision)
         print("AUC precision recall curve is : ", np.around(auc_precision_recall, decimals=3))
         # plot results
+        plt.figure(figsize=(8, 7))
         plt.plot(recall, precision, label='precision')
         thresholds = np.insert(thresholds, [0], 0)
         plt.plot(recall, thresholds, label='thresholds')
         plt.title(f'Precision recall curve for the {self.model_type} classifier')
         plt.xlabel('recall')
+        plt.ylabel('precision/threshold')
         plt.legend()
         plt.show()
 
+    def get_feature_importance(self):
+        """print the feature importance by order of passage in the column transformer"""
+        if self.model_type == "rf":
+            print("Feature importance: \n",
+                  np.around(self.pipeline.steps[1][1].feature_importances_, decimals=3))
+        elif self.model_type == "lr":
+            print("Feature coefficients: \n",
+                  np.around(self.pipeline.steps[1][1].coef_, decimals=3))

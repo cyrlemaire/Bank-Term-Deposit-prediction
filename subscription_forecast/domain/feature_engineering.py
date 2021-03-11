@@ -4,11 +4,10 @@ from sklearn.base import TransformerMixin, BaseEstimator
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import RobustScaler
 
 from subscription_forecast.config.config import read_yaml
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import RobustScaler
 
 # read config file:
 
@@ -35,6 +34,7 @@ class IndicatorTransformer(BaseEstimator, TransformerMixin):
     def transform(self, data_x, y=None):
         data_x = np.where((data_x == 'Yes') | (data_x == 'Succes'), 1, 0)
         return data_x
+
 
 class DateTransformer(BaseEstimator, TransformerMixin):
     """Extract weekdays and months from date and do target encoding"""
