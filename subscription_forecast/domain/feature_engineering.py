@@ -2,14 +2,26 @@ import numpy as np
 import pandas as pd
 from sklearn.base import TransformerMixin, BaseEstimator
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import RobustScaler
-import random
 
+from subscription_forecast.config.config import read_yaml
 
-# transformers:
+# read config file:
+
+CONFIG = read_yaml()
+
+# get filters for feature engineering:
+
+features_to_indicator = CONFIG['filters']['features_to_indicator']
+socio_eco_features = CONFIG['filters']['socio_eco_features']
+numeric_features = CONFIG['filters']['numeric_features']
+categorical_features = CONFIG['filters']['categorical_features']
+
+# custom transformers:
+
 
 class IndicatorTransformer(BaseEstimator, TransformerMixin):
     """transform a subset categorical feature into a 1/0 feature"""
@@ -22,6 +34,7 @@ class IndicatorTransformer(BaseEstimator, TransformerMixin):
     def transform(self, data_x, y=None):
         data_x = np.where((data_x == 'Yes') | (data_x == 'Succes'), 1, 0)
         return data_x
+
 
 class DateTransformer(BaseEstimator, TransformerMixin):
     """Extract weekdays and months from date and do target encoding"""
@@ -108,10 +121,11 @@ class HousingPersoLoanTransformer(BaseEstimator, TransformerMixin):
         data_x['has_housing_loan'] = data_x['has_housing_loan'].replace({'Yes': 1, 'No': 0})
         data_x['has_perso_loan'] = data_x['has_perso_loan'].replace({'Yes': 1, 'No': 0, np.NaN: 0})
         data_x['has_loan'] = data_x['has_housing_loan'] + data_x['has_perso_loan']
+        data_x = data_x.drop(columns=['has_housing_loan', 'has_perso_loan'])
         return data_x
 
-# custom transformer pipelines
 
+# custom transformer pipelines
 
 age_transformer = Pipeline(steps=[
     ('age_imputer', AgeImputer()),
@@ -125,4 +139,16 @@ day_last_contact_transformer = Pipeline(steps=[
     ('day_last_contact_transformer', DayLastContactTransformer()),
     ('day_last_contact_scaler', RobustScaler())])
 
+# Feature engineering pipeline:
 
+transformer = ColumnTransformer(
+    transformers=[('feature_indicator', IndicatorTransformer(), features_to_indicator),
+                  ('age_transformer', age_transformer, ['age']),
+                  ('date_transformer', DateTransformer(), ['date']),
+                  ('numeric_scaler', RobustScaler(), numeric_features),
+                  ('category_transformer', categorical_transformer, categorical_features),
+                  ('socio_eco_scaler', RobustScaler(), socio_eco_features),
+                  ('housing_perso_loan_transformer', HousingPersoLoanTransformer(), ['has_housing_loan', 'has_perso_loan']),
+                  ('day_last_contact_transformer', day_last_contact_transformer, ['nb_day_last_contact'])
+                  ],
+    remainder='drop')

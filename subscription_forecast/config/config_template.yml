@@ -1,0 +1,31 @@
+data:
+  data_path : /path/to/data
+  client_file_name : filename.csv
+  socio_eco_file_name : filename.csv
+
+prediction_data:
+  data_path : /path/to/data
+  client_file_name : filename.csv
+  socio_eco_file_name : filename.csv
+  predictions_file_name: predictions.csv
+
+model:
+  name: "rf"
+  threshold: 0.3
+
+filters:
+  TARGET : 'subscription'
+  features_to_drop: ['contact',
+                  'duration_contact',
+                  'nb_contact_last_campaign',
+                  'has_default',
+                  'job_type']
+  features_to_indicator : ['result_last_campaign']
+  socio_eco_features : ['employment_variation_rate',
+                        'idx_consumer_price',
+                        'idx_consumer_confidence']
+  numeric_features : ['balance',
+                      'nb_contact']
+  categorical_features : ['education',
+                          'status']
+
