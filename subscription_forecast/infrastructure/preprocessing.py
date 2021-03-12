@@ -46,6 +46,7 @@ def features_from(data_path: str, client_data_file_name: str, socio_eco_file_nam
 
     # drop features:
     client_full = drop_features(client_full)
+
     return client_full
 
 

@@ -68,5 +68,5 @@ final_pipeline.fit(x_train, y_train)
 
 evaluator = ModelEvaluator(MODEL_NAME, final_pipeline)
 
-evaluator.print_metrics(x_test, y_test, x_train, y_train)
+evaluator.plot_precision_recall(x_test, y_test, x_train, y_train)
 
