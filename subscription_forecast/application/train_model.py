@@ -20,9 +20,9 @@ features_to_drop = CONFIG['filters']['features_to_drop']
 
 # get preprocessed dataset:
 
-client_full = preprocessing.features_from(CONFIG['data']['data_path'],
-                                          CONFIG['data']['client_file_name'],
-                                          CONFIG['data']['socio_eco_file_name'],
+client_full = preprocessing.features_from(CONFIG['training_data']['data_path'],
+                                          CONFIG['training_data']['client_file_name'],
+                                          CONFIG['training_data']['socio_eco_file_name'],
                                           features_to_drop)
 
 # split the data into train set and test set:
@@ -69,4 +69,3 @@ final_pipeline.fit(x_train, y_train)
 evaluator = ModelEvaluator(MODEL_NAME, final_pipeline)
 
 evaluator.plot_precision_recall(x_test, y_test, x_train, y_train)
-

@@ -24,9 +24,9 @@ MODEL_NAME = CONFIG['model']['name']
 
 # get preprocessed dataset:
 
-client_full = preprocessing.features_from(CONFIG['data']['data_path'],
-                                          CONFIG['data']['client_file_name'],
-                                          CONFIG['data']['socio_eco_file_name'],
+client_full = preprocessing.features_from(CONFIG['training_data']['data_path'],
+                                          CONFIG['training_data']['client_file_name'],
+                                          CONFIG['training_data']['socio_eco_file_name'],
                                           features_to_drop)
 
 # split the data into train set and test set:
