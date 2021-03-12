@@ -20,9 +20,9 @@ features_to_drop = CONFIG['filters']['features_to_drop']
 
 # get preprocessed dataset:
 
-client_full = preprocessing.features_from(CONFIG['data']['data_path'],
-                                          CONFIG['data']['client_file_name'],
-                                          CONFIG['data']['socio_eco_file_name'],
+client_full = preprocessing.features_from(CONFIG['training_data']['data_path'],
+                                          CONFIG['training_data']['client_file_name'],
+                                          CONFIG['training_data']['socio_eco_file_name'],
                                           features_to_drop)
 
 # split the data into train set and test set:
@@ -38,10 +38,22 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, stratif
     -'lr' for Logistic Regression"""
 
 if MODEL_NAME == "rf":
+    optimal_parameters = {'rf_n_estimators': 668,
+                          'rf_max_depth': 10,
+                          'rf_min_samples_leaf': 10,
+                          'rf_min_samples_split': 31,
+                          'rf_bootstrap': True,
+                          'rf_max_features': 'auto'}
     final_pipeline = Pipeline(steps=[
         ('transformer', feature_engineering.transformer),
-        (MODEL_NAME, RandomForestClassifier(n_estimators=200, max_depth=12, random_state=12))
-    ])
+        (MODEL_NAME, RandomForestClassifier(random_state=12,
+                                            max_depth=optimal_parameters['rf_max_depth'],
+                                            n_estimators=optimal_parameters['rf_n_estimators'],
+                                            min_samples_leaf=optimal_parameters['rf_min_samples_leaf'],
+                                            min_samples_split=optimal_parameters['rf_min_samples_split'],
+                                            bootstrap=optimal_parameters['rf_bootstrap'],
+                                            max_features=optimal_parameters['rf_max_features'])
+         )])
 elif MODEL_NAME == "lr":
     final_pipeline = Pipeline(steps=[
         ('transformer', feature_engineering.transformer),
@@ -56,6 +68,4 @@ final_pipeline.fit(x_train, y_train)
 
 evaluator = ModelEvaluator(MODEL_NAME, final_pipeline)
 
-evaluator.print_metrics(x_test, y_test, x_train, y_train)
 evaluator.plot_precision_recall(x_test, y_test, x_train, y_train)
-

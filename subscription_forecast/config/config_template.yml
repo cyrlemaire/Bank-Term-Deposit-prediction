@@ -1,4 +1,4 @@
-data:
+training_data:
   data_path : /path/to/data
   client_file_name : filename.csv
   socio_eco_file_name : filename.csv
@@ -7,11 +7,11 @@ prediction_data:
   data_path : /path/to/data
   client_file_name : filename.csv
   socio_eco_file_name : filename.csv
+  predictions_file_name: predictions.csv
 
 model:
   name: "rf"
-  drop_nan: False
-  threshold: 0.1
+  threshold: 0.2
 
 filters:
   TARGET : 'subscription'

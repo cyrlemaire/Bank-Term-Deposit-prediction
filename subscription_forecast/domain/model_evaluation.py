@@ -38,11 +38,13 @@ class ModelEvaluator:
         # get features
         self.pipeline.steps[0][1].fit(x_train, y_train)
         X_FE = self.pipeline.steps[0][1].transform(x_test)
+
         # get precision and recall
         y_score = self.pipeline.steps[1][1].predict_proba(X_FE)
         precision, recall, thresholds = precision_recall_curve(y_test, y_score[:, 1], pos_label=1)
         auc_precision_recall = auc(recall, precision)
         print("AUC precision recall curve is : ", np.around(auc_precision_recall, decimals=3))
+
         # plot results
         plt.figure(figsize=(8, 7))
         plt.plot(recall, precision, label='precision')

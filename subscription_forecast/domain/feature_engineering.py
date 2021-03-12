@@ -20,8 +20,8 @@ socio_eco_features = CONFIG['filters']['socio_eco_features']
 numeric_features = CONFIG['filters']['numeric_features']
 categorical_features = CONFIG['filters']['categorical_features']
 
+# custom transformers:
 
-# transformers:
 
 class IndicatorTransformer(BaseEstimator, TransformerMixin):
     """transform a subset categorical feature into a 1/0 feature"""
@@ -121,6 +121,7 @@ class HousingPersoLoanTransformer(BaseEstimator, TransformerMixin):
         data_x['has_housing_loan'] = data_x['has_housing_loan'].replace({'Yes': 1, 'No': 0})
         data_x['has_perso_loan'] = data_x['has_perso_loan'].replace({'Yes': 1, 'No': 0, np.NaN: 0})
         data_x['has_loan'] = data_x['has_housing_loan'] + data_x['has_perso_loan']
+        data_x = data_x.drop(columns=['has_housing_loan', 'has_perso_loan'])
         return data_x
 
 
@@ -150,5 +151,4 @@ transformer = ColumnTransformer(
                   ('housing_perso_loan_transformer', HousingPersoLoanTransformer(), ['has_housing_loan', 'has_perso_loan']),
                   ('day_last_contact_transformer', day_last_contact_transformer, ['nb_day_last_contact'])
                   ],
-    remainder='drop'
-)
+    remainder='drop')
