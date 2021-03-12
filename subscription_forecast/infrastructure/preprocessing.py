@@ -17,7 +17,6 @@ def features_from(data_path: str, client_data_file_name: str, socio_eco_file_nam
     def socio_eco_imputer(socio_eco):
         """Fills the NaN values specifically for the socio_eco dataset."""
         socio_eco_complete = socio_eco.copy()
-        socio_eco_complete.iloc[[4, 8, 9, 20, 21], 1] = [-0.1, -0.2, -0.2, -3.0, 3.0]
         socio_eco_complete = socio_eco_complete.interpolate()
         return socio_eco_complete
 
