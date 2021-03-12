@@ -3,7 +3,6 @@ import pandas as pd
 
 # pre-processing functions
 
-
 def features_from(data_path: str, client_data_file_name: str, socio_eco_file_name: str, to_drop: list):
     """extract the 2 csv files and create a dataset to feed in the
     Feature engineering pipeline"""
@@ -46,20 +45,18 @@ def features_from(data_path: str, client_data_file_name: str, socio_eco_file_nam
     client_full = link_dataframes(client, socio_eco)
 
     # drop features:
-
     client_full = drop_features(client_full)
-
     return client_full
 
 
 def drop_nan(full_data):
     """drop rows with more than 2 NaN
     => not used in optimized model"""
-    print(f"Before preprocessing the dataset contains {full_data.isna().sum()} missing values")
+    print(f"Before preprocessing the dataset contains {full_data.isna().sum().sum()} missing values")
     rows_removed = full_data
     full_data = full_data.dropna(thresh=full_data.shape[1]-2, axis=0)
     rows_removed = rows_removed.drop(full_data.index.values.tolist(), axis=0)
-    print(f"After preprocessing the dataset contains {full_data.isna().sum()} missing values")
+    print(f"After preprocessing the dataset contains {full_data.isna().sum().sum()} missing values")
     return full_data, rows_removed
 
 

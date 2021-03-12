@@ -1,7 +1,3 @@
-from sklearn.metrics import recall_score,\
-    precision_score, \
-    confusion_matrix, \
-    accuracy_score
 import pandas as pd
 import numpy as np
 
@@ -37,11 +33,6 @@ predictions_proba = final_pipeline.steps[1][1].predict_proba(engineered_data)
 
 THRESHOLD = CONFIG['model']['threshold']
 predictions = np.where(predictions_proba[:, 1] >= THRESHOLD, 1, 0)
-
-print("Model accuracy : ", np.around(accuracy_score(y, predictions), decimals=3))
-print("Model precision : ", np.around(precision_score(y, predictions, average="binary", pos_label=1), decimals=3))
-print("Model recall = ", np.around(recall_score(y, predictions, average="binary", pos_label=1), decimals=3))
-print("Confusion Matrix : \n", confusion_matrix(y, predictions, labels=[1, 0]))
 
 # create and store a dataframe with client indexes and predictions :
 
