@@ -2,6 +2,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
+import pickle
 
 from subscription_forecast.config.config import read_yaml
 from subscription_forecast.infrastructure import preprocessing
@@ -63,6 +64,9 @@ else:
     raise KeyError("wrong model name, try 'lr' or 'rf'")
 
 final_pipeline.fit(x_train, y_train)
+
+filename = 'finalized_model.sav'
+pickle.dump(final_pipeline, open(filename, 'wb'))
 
 # model performance evaluation
 
