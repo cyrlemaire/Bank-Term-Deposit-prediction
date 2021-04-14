@@ -1,14 +1,14 @@
 import pandas as pd
 import numpy as np
+import pickle
 
-from subscription_forecast.application.train_model import final_pipeline
 from subscription_forecast.config.config import read_yaml
 from subscription_forecast.infrastructure import preprocessing
-
 
 # read config file:
 
 CONFIG = read_yaml()
+MODEL_NAME = CONFIG['model']['name']
 
 # get filters for feature engineering:
 
@@ -20,6 +20,15 @@ prediction_data_full = preprocessing.features_from(CONFIG['prediction_data']['da
                                                    CONFIG['prediction_data']['client_file_name'],
                                                    CONFIG['prediction_data']['socio_eco_file_name'],
                                                    features_to_drop)
+
+# Load model from pickle:
+
+def load_model():
+    with open("/Users/cyrillemaire/Documents/Yotta/Project/FINAL_TEST/productsubscription_dc_cl_js/subscription_forecast/finalized_model.sav", 'rb') as f:
+        return pickle.load(f)
+
+
+final_pipeline = load_model()
 
 # get prediction probabilities:
 
