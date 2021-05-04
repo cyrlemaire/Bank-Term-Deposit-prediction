@@ -120,7 +120,7 @@ class HousingPersoLoanTransformer(BaseEstimator, TransformerMixin):
 
     def transform(self, data_x, y=None):
         data_x['has_housing_loan'] = data_x['has_housing_loan'].replace(indicator)
-        data_x['has_perso_loan'] = data_x['has_perso_loan'].replace(indicator)
+        data_x['has_perso_loan'] = data_x['has_perso_loan'].replace({'Yes': 1, 'No': 0, np.NaN: 0})
         data_x['has_loan'] = data_x['has_housing_loan'] + data_x['has_perso_loan']
         data_x = data_x.drop(columns=['has_housing_loan', 'has_perso_loan'])
         return data_x

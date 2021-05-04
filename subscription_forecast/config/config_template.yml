@@ -12,11 +12,12 @@ prediction_data:
 model:
   name: "rf"
   threshold: 0.2
+  file_name: 'finalized_model.sav'
 
 preprocessing:
   csv_delimiter : ';'
   dataset_filename: 'processed_dataset.csv'
-  indicator: {'Yes': 1, 'No': 0, np.NaN: 0}
+  indicator: {'Yes': 1, 'No': 0}
 
 filters:
   TARGET : 'subscription'
