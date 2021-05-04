@@ -10,6 +10,8 @@ features_to_drop = CONFIG['filters']['features_to_drop']
 data_path = CONFIG['training_data']['data_path']
 client_data_file_name = CONFIG['training_data']['client_file_name']
 socio_eco_file_name = CONFIG['training_data']['socio_eco_file_name']
+dataset_filename = CONFIG['preprocessing']['dataset_filename']
+delimiter = CONFIG['preprocessing']['csv_delimiter']
 
 
 class Dataset:
@@ -18,19 +20,19 @@ class Dataset:
     def load_data_from(data_path: str, filename: str) -> pd.DataFrame:
         """ load a dataset from in a .csv file and return a dataframe
         with lower case column names"""
-        data = pd.read_csv(data_path+'/'+filename, delimiter=CONFIG['preprocessing']['csv_delimiter'])
+        data = pd.read_csv(data_path+'/'+filename, delimiter=delimiter)
         data.columns = data.columns.str.lower()
         return data
 
     @staticmethod
-    def socio_eco_imputer(socio_eco: pd.Dataframe) -> pd.DataFrame:
+    def socio_eco_imputer(socio_eco: pd.DataFrame) -> pd.DataFrame:
         """Fills the NaN values specifically for the socio_eco dataset."""
         socio_eco_complete = socio_eco.copy()
         socio_eco_complete = socio_eco_complete.interpolate()
         return socio_eco_complete
 
     @staticmethod
-    def link_dataframes(data_left: pd.Dataframe, data_right: pd.Dataframe) -> pd.DataFrame:
+    def link_dataframes(data_left: pd.DataFrame, data_right: pd.DataFrame) -> pd.DataFrame:
         """Extract month and year from a date column in 2 dataframes,
         use this truncated date as key for a left join between the two datasets"""
         data_left['date_trunc'] = data_left['date'].str.slice(stop=7)
@@ -42,13 +44,13 @@ class Dataset:
         return data_left
 
     @staticmethod
-    def drop_features(full_data: pd.Dataframe, to_drop: list) -> pd.Dataframe:
+    def drop_features(full_data: pd.DataFrame, to_drop: list) -> pd.DataFrame:
         """Drop useless columns"""
         full_data = full_data.drop(columns=to_drop)
         return full_data
 
     @staticmethod
-    def drop_nan(full_data: pd.Dataframe) -> pd.Dataframe:
+    def drop_nan(full_data: pd.DataFrame) -> tuple:
         """drop rows with more than 2 NaN
         => not used in optimized model"""
         print(f"Before preprocessing the dataset contains {full_data.isna().sum().sum()} missing values")
@@ -59,7 +61,7 @@ class Dataset:
         return full_data, rows_removed
 
 
-if __name__ == '__main__':
+def main():
 
     # load data
     client = Dataset.load_data_from(data_path, client_data_file_name)
@@ -70,10 +72,13 @@ if __name__ == '__main__':
     client_full = Dataset.link_dataframes(client, socio_eco)
 
     # drop features:
-    client_full = Dataset.drop_features(client_full,features_to_drop)
+    client_full = Dataset.drop_features(client_full, features_to_drop)
+
+    # save dataset in csv:
+    client_full.to_csv(data_path + '/' + dataset_filename, sep=delimiter)
 
 
+if __name__ == '__main__':
 
-
-
+    main()
 

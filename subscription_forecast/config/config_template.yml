@@ -15,6 +15,7 @@ model:
 
 preprocessing:
   csv_delimiter : ';'
+  dataset_filename: 'processed_dataset.csv'
 
 filters:
   TARGET : 'subscription'
