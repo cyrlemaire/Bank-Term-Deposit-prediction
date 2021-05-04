@@ -12,6 +12,8 @@ client_data_file_name = CONFIG['training_data']['client_file_name']
 socio_eco_file_name = CONFIG['training_data']['socio_eco_file_name']
 dataset_filename = CONFIG['preprocessing']['dataset_filename']
 delimiter = CONFIG['preprocessing']['csv_delimiter']
+target = CONFIG['filters']['TARGET']
+indicator = CONFIG['preprocessing']['indicator']
 
 
 class Dataset:
@@ -50,6 +52,12 @@ class Dataset:
         return full_data
 
     @staticmethod
+    def target_indicator(full_data: pd.DataFrame, target: str, indicator: dict):
+        """encode the target column in 1/0 format"""
+        full_data[target] = full_data[target].replace(indicator)
+        return full_data
+
+    @staticmethod
     def drop_nan(full_data: pd.DataFrame) -> tuple:
         """drop rows with more than 2 NaN
         => not used in optimized model"""
@@ -71,8 +79,9 @@ def main():
     # merge data
     client_full = Dataset.link_dataframes(client, socio_eco)
 
-    # drop features:
+    # preprocessing:
     client_full = Dataset.drop_features(client_full, features_to_drop)
+    client_full = Dataset.target_indicator(client_full, target, indicator)
 
     # save dataset in csv:
     client_full.to_csv(data_path + '/' + dataset_filename, sep=delimiter)

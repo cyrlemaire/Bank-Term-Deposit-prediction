@@ -16,6 +16,7 @@ model:
 preprocessing:
   csv_delimiter : ';'
   dataset_filename: 'processed_dataset.csv'
+  indicator: {'Yes': 1, 'No': 0, np.NaN: 0}
 
 filters:
   TARGET : 'subscription'

@@ -29,7 +29,6 @@ client_full = preprocessing.features_from(CONFIG['training_data']['data_path'],
 # split the data into train set and test set:
 
 y = client_full[TARGET]
-y = y.replace({'Yes': 1, 'No': 0})
 x = client_full.drop(columns=TARGET)
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, stratify=y, random_state=42)
 
