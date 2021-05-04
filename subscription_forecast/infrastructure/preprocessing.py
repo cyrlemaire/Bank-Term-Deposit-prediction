@@ -7,9 +7,9 @@ from subscription_forecast.config.config import read_yaml
 CONFIG = read_yaml()
 
 features_to_drop = CONFIG['filters']['features_to_drop']
-data_path = CONFIG['training_data']['data_path']
-client_data_file_name = CONFIG['training_data']['client_file_name']
-socio_eco_file_name = CONFIG['training_data']['socio_eco_file_name']
+data_path = CONFIG['data']['data_path']
+client_data_file_name = CONFIG['data']['client_file_name']
+socio_eco_file_name = CONFIG['data']['socio_eco_file_name']
 dataset_filename = CONFIG['preprocessing']['dataset_filename']
 delimiter = CONFIG['preprocessing']['csv_delimiter']
 target = CONFIG['filters']['TARGET']

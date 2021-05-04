@@ -1,18 +1,16 @@
-training_data:
+data:
   data_path : /path/to/data
   client_file_name : filename.csv
   socio_eco_file_name : filename.csv
 
-prediction_data:
+predictions:
   data_path : /path/to/data
-  client_file_name : filename.csv
-  socio_eco_file_name : filename.csv
   predictions_file_name: predictions.csv
 
 model:
   name: "rf"
   threshold: 0.2
-  file_name: 'finalized_model.sav'
+  filename: 'finalized_model.sav'
 
 preprocessing:
   csv_delimiter : ';'

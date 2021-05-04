@@ -15,7 +15,7 @@ CONFIG = read_yaml()
 
 # get some config paramters
 
-data_path = CONFIG['training_data']['data_path']
+data_path = CONFIG['data']['data_path']
 dataset_filename = CONFIG['preprocessing']['dataset_filename']
 delimiter = CONFIG['preprocessing']['csv_delimiter']
 MODEL_NAME = CONFIG['model']['name']
