@@ -53,8 +53,9 @@ class Dataset:
 
     @staticmethod
     def target_indicator(full_data: pd.DataFrame, target: str, indicator: dict):
-        """encode the target column in 1/0 format"""
-        full_data[target] = full_data[target].replace(indicator)
+        """encode the target column in 1/0 format if it exists"""
+        if target in full_data.columns:
+            full_data[target] = full_data[target].replace(indicator)
         return full_data
 
     @staticmethod
