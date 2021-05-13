@@ -1,10 +1,11 @@
+import pandas as pd
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
+import pickle
 
 from subscription_forecast.config.config import read_yaml
-from subscription_forecast.infrastructure import preprocessing
 from subscription_forecast.domain import feature_engineering
 from subscription_forecast.domain.model_evaluation import ModelEvaluator
 
@@ -14,23 +15,14 @@ CONFIG = read_yaml()
 
 # get some config paramters
 
+data_path = CONFIG['data']['data_path']
+dataset_filename = CONFIG['preprocessing']['dataset_filename']
+delimiter = CONFIG['preprocessing']['csv_delimiter']
 MODEL_NAME = CONFIG['model']['name']
+model_filename = CONFIG['model']['filename']
 TARGET = CONFIG['filters']['TARGET']
 features_to_drop = CONFIG['filters']['features_to_drop']
 
-# get preprocessed dataset:
-
-client_full = preprocessing.features_from(CONFIG['training_data']['data_path'],
-                                          CONFIG['training_data']['client_file_name'],
-                                          CONFIG['training_data']['socio_eco_file_name'],
-                                          features_to_drop)
-
-# split the data into train set and test set:
-
-y = client_full[TARGET]
-y = y.replace({'Yes': 1, 'No': 0})
-x = client_full.drop(columns=TARGET)
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, stratify=y, random_state=42)
 
 # model training pipeline:
 """Model names are:
@@ -62,10 +54,29 @@ elif MODEL_NAME == "lr":
 else:
     raise KeyError("wrong model name, try 'lr' or 'rf'")
 
-final_pipeline.fit(x_train, y_train)
 
-# model performance evaluation
+if __name__ == '__main__':
 
-evaluator = ModelEvaluator(MODEL_NAME, final_pipeline)
+    # get preprocessed dataset:
 
-evaluator.plot_precision_recall(x_test, y_test, x_train, y_train)
+    client_full = pd.read_csv(data_path + '/' + dataset_filename, delimiter=delimiter)
+
+    # split the data into train set and test set:
+
+    y = client_full[TARGET]
+    x = client_full.drop(columns=TARGET)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, stratify=y, random_state=42)
+
+    # fit and save model
+
+    final_pipeline.fit(x_train, y_train)
+
+    pickle.dump(final_pipeline, open(model_filename, 'wb'))
+
+    # model performance evaluation
+
+    evaluator = ModelEvaluator(MODEL_NAME, final_pipeline)
+
+    evaluator.plot_precision_recall(x_test, y_test, x_train, y_train)
+
+

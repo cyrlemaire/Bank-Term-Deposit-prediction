@@ -1,17 +1,21 @@
-training_data:
+data:
   data_path : /path/to/data
   client_file_name : filename.csv
   socio_eco_file_name : filename.csv
 
-prediction_data:
+predictions:
   data_path : /path/to/data
-  client_file_name : filename.csv
-  socio_eco_file_name : filename.csv
   predictions_file_name: predictions.csv
 
 model:
   name: "rf"
   threshold: 0.2
+  filename: 'finalized_model.sav'
+
+preprocessing:
+  csv_delimiter : ';'
+  dataset_filename: 'processed_dataset.csv'
+  indicator: {'Yes': 1, 'No': 0}
 
 filters:
   TARGET : 'subscription'

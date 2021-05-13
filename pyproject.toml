@@ -15,6 +15,7 @@ category-encoders = "^2.2.2"
 optuna = "^2.6.0"
 phik = "^0.11.2"
 ipykernel = "^5.5.0"
+pickle-mixin = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

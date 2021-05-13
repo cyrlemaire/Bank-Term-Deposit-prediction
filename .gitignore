@@ -5,3 +5,4 @@
 *.ipynb_checkpoints
 env.config
 config.yml
+finalized_model.sav
